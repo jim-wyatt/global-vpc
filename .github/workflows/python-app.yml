@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: Python CI
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13"]
 
     steps:
     - uses: actions/checkout@v4
@@ -44,14 +44,16 @@ jobs:
         pip install pytest pytest-cov
         coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
         coverage xml -o coverage.xml
+    - name: Publish Coverage Results
+      uses: orgoro/coverage@v3.2
+      with:
+        coverageFile: ./coverage.xml
+        thresholdAll: 0.95
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
         files: |
           junit/test-results-*.xml
-    - name: Publish Coverage Results
-      uses: orgoro/coverage@v3.2
-      with:
-        coverageFile: ./coverage.xml
-        token: ${{ secrets.GITHUB_TOKEN }}
+    
