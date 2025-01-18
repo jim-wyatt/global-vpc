@@ -42,7 +42,7 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
-        coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results${{ matrix.python-version }}.xml
+        coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
         coverage xml -o coverage.xml
     - name: Upload pytest test results
       uses: actions/upload-artifact@v4
