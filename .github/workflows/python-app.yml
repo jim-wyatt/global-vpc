@@ -43,15 +43,15 @@ jobs:
       run: |
         pip install pytest pytest-cov
         mkdir -p coverage
-        coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+        coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=pytest/test-results-${{ matrix.python-version }}.xml
         coverage xml -o coverage/coverage.xml
     - name: Archive test results
       uses: actions/upload-artifact@v4
       with:
-        name: test-results-${{ matrix.python-version }}
+        name: results-${{ matrix.python-version }}
         path: |
           coverage/coverage.xml
-          junit/test-results-*.xml
+          pytest/test-results-*.xml
           ruff/lint-report.txt
           ruff/format-report.txt
   
