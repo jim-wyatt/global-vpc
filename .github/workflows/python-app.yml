@@ -49,6 +49,8 @@ jobs:
       if: success() || failure() # always run even if the previous step fails
       with:
         report_paths: '**/junit/test-results-*.xml'
+        include_passed: true
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Amend PR with coverage results
       uses: orgoro/coverage@v3.2
       with:
