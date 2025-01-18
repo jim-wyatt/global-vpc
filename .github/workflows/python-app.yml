@@ -10,13 +10,13 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: read
+  contents: write
   checks: write
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v4
