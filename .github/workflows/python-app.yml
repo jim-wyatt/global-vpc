@@ -50,6 +50,7 @@ jobs:
       with:
         report_paths: '**/junit/test-results-*.xml'
         include_passed: true
+        annotate_notice: true
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Amend PR with coverage results
       uses: orgoro/coverage@v3.2
