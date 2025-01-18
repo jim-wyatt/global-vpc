@@ -69,7 +69,7 @@ jobs:
       if: always()
       with:
         files: |
-          junit/test-results-*.xml
+          pytest/test-results-*.xml
     - name: Publish Coverage Results
       uses: orgoro/coverage@v3.2
       with:
