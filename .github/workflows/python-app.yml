@@ -33,9 +33,9 @@ jobs:
     - name: Install the code linting and formatting tool Ruff
       run: pipx install ruff
     - name: Lint code with Ruff
-      run: ruff check --output-format=github --target-version=py39 --output-file=lint-report.txt --verbose
+      run: ruff check --output-format=github --target-version=py39 --verbose | tee lint-report.txt
     - name: Check code formatting with Ruff
-      run: ruff format --diff --target-version=py39 --verbose
+      run: ruff format --diff --target-version=py39 --verbose | tee format-report.txt
       continue-on-error: false
     - name: Test with pytest
       run: |
