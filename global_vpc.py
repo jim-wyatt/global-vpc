@@ -34,11 +34,12 @@ logging.basicConfig(
 
 # Magic numbers
 SUBNET_OFFSET = 4
-REGION_SUBNET_START = 11
-PUBLIC_SUBNET_START = 8
-PRIVATE_SUBNET_START = 72
-DATA_SUBNET_START = 136
-ADMIN_SUBNET_START = 200
+SUBNET_WIDTH = 22
+REGION_SUBNET_START = 101
+PUBLIC_SUBNET_START = 11
+PRIVATE_SUBNET_START = 51
+DATA_SUBNET_START = 101
+ADMIN_SUBNET_START = 201
 
 
 def get_all_regions() -> List[str]:
@@ -230,7 +231,7 @@ def create_subnets(vpc, cidr_block, availability_zones) -> List:
                 ["admin", ADMIN_SUBNET_START],
             ]:
                 subnet = vpc.create_subnet(
-                    CidrBlock=f"10.{cidr_block}.{index * SUBNET_OFFSET + subnet_start}.0/22",
+                    CidrBlock=f"10.{cidr_block}.{index * SUBNET_OFFSET + subnet_start}.0/{SUBNET_WIDTH}",
                     AvailabilityZone=az["ZoneName"],
                     TagSpecifications=[
                         {
