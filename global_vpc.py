@@ -176,7 +176,7 @@ def setup_route_tables(vpc, gateway_id) -> None:
 
 
 def process_region(region, cidr_block) -> dict:
-    """Process a given region by creating a VPC, setting up security groups, route tables, and subnets.
+    """Process a region by creating a VPC, setting up security groups, route tables, and subnets.
 
     Args:
         region (str): The AWS region to process.
@@ -230,8 +230,9 @@ def create_subnets(vpc, cidr_block, availability_zones) -> List:
                 ["data", DATA_SUBNET_START],
                 ["admin", ADMIN_SUBNET_START],
             ]:
+                subnet_cidr = index * SUBNET_OFFSET + subnet_start
                 subnet = vpc.create_subnet(
-                    CidrBlock=f"10.{cidr_block}.{index * SUBNET_OFFSET + subnet_start}.0/{SUBNET_WIDTH}",
+                    CidrBlock=f"10.{cidr_block}.{subnet_cidr}.0/{SUBNET_WIDTH}",
                     AvailabilityZone=az["ZoneName"],
                     TagSpecifications=[
                         {
