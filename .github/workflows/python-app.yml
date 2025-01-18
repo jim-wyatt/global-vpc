@@ -39,7 +39,7 @@ jobs:
     - name: Test with unittest
       run: |
         coverage run test_global_vpc.py -v
-        coverage xml coverage.xml
+        coverage xml ./coverage.xml
     - name: Get Coverage
       uses: orgoro/coverage@v3.2
       with:
