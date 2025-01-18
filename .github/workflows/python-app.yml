@@ -15,13 +15,11 @@ permissions:
   pull-requests: write
 
 jobs:
-  build:
-
+  Build:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -38,22 +36,39 @@ jobs:
       run: ruff check --output-format=github --target-version=py39
     - name: Check code formatting with Ruff
       run: ruff format --diff --target-version=py39
-      continue-on-error: true
+      continue-on-error: false
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
         coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
         coverage xml -o coverage.xml
-    - name: Publish Coverage Results
-      uses: orgoro/coverage@v3.2
+    - name: Archive test results
+      uses: actions/upload-artifact@v4
       with:
-        coverageFile: ./coverage.xml
-        thresholdAll: 0.95
-        token: ${{ secrets.GITHUB_TOKEN }}
+        name: test-results-${{ matrix.python-version }}
+        path: |
+          coverage.xml
+          junit/test-results-*.xml
+  
+  Publish:
+    runs-on: ubuntu-24.04
+    needs: Build
+    steps:
+    - name: Download test results
+      uses: actions/download-artifact@v4
+      with:
+        path: ./
+        merge-multiple: true
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
         files: |
           junit/test-results-*.xml
+    - name: Publish Coverage Results
+      uses: orgoro/coverage@v3.2
+      with:
+        coverageFile: ./coverage.xml
+        thresholdAll: 0.95
+        token: ${{ secrets.GITHUB_TOKEN }}
     
