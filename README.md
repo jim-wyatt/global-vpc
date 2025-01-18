@@ -14,11 +14,12 @@ This file contains the main logic for creating and managing VPCs across multiple
 
 - `get_all_regions()`: Fetches all available AWS regions.
 - `create_vpc_in_region(region, cidr_block)`: Creates a VPC in the specified region with the given CIDR block.
-- `setup_vpc(vpc_id, region, region_cidr_block)`: Sets up the VPC by creating an internet gateway and attaching it to the VPC.
+- `setup_vpc(vpc_id, region)`: Sets up the VPC by creating an internet gateway and attaching it to the VPC.
 - `setup_security_groups(ec2, vpc)`: Sets up security groups for the VPC.
 - `setup_route_tables(vpc, gateway_id)`: Sets up route tables for the VPC.
 - `process_region(region, cidr_block)`: Processes a region by creating and setting up a VPC.
-- `create_vpc_peering(vpcs)`: Creates VPC peering connections between the VPCs in different regions.
+- `create_subnets(vpc, cidr_block, availability_zones)`: Creates subnets in the given VPC.
+- `create_peering(requestor, acceptor)`: Creates VPC peering connections between the VPCs in different regions.
 - `main()`: Orchestrates the entire process of fetching regions, creating and setting up VPCs, and establishing peering connections.
 
 Exception handling is implemented throughout the script to handle errors gracefully and provide informative error messages.
@@ -33,7 +34,8 @@ This file contains a suite of unit tests for the functions in `global_vpc.py`. T
 - `test_setup_security_groups()`: Tests the `setup_security_groups` function, including error handling.
 - `test_setup_route_tables()`: Tests the `setup_route_tables` function, including error handling.
 - `test_process_region()`: Tests the `process_region` function, including error handling.
-- `test_create_vpc_peering()`: Tests the `create_vpc_peering` function, including error handling.
+- `test_create_subnets()`: Tests the `create_subnets` function, including error handling.
+- `test_create_peering()`: Tests the `create_peering` function, including error handling.
 - `test_main()`: Tests the `main` function.
 
 These tests ensure that the functions work as expected and handle errors gracefully, improving the overall reliability of the script.
