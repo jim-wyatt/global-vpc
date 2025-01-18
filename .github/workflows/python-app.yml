@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.10","3.11", "3.12", "3.13"]
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -33,24 +33,27 @@ jobs:
     - name: Install the code linting and formatting tool Ruff
       run: pipx install ruff
     - name: Lint code with Ruff
-      run: ruff check --output-format=github --target-version=py39 --output-file=lint-report.txt --verbose
+      run: |
+        mkdir -p ruff
+        ruff check --output-format=github --target-version=py39 --verbose 2>&1 | tee -a ruff/lint-report.txt
     - name: Check code formatting with Ruff
-      run: ruff format --diff --target-version=py39 --verbose
+      run: ruff format --diff --target-version=py39 --verbose 2>&1 | tee ruff/format-report.txt
       continue-on-error: false
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
-        coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
-        coverage xml -o coverage.xml
+        mkdir -p coverage
+        coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=pytest/test-results-${{ matrix.python-version }}.xml
+        coverage xml -o coverage/coverage.xml
     - name: Archive test results
       uses: actions/upload-artifact@v4
       with:
-        name: test-results-${{ matrix.python-version }}
+        name: results-${{ matrix.python-version }}
         path: |
-          coverage.xml
-          junit/test-results-*.xml
-          lint-report.txt
-          format-report.txt
+          coverage/coverage.xml
+          pytest/test-results-*.xml
+          ruff/lint-report.txt
+          ruff/format-report.txt
   
   Publish:
     runs-on: ubuntu-24.04
@@ -66,11 +69,11 @@ jobs:
       if: always()
       with:
         files: |
-          junit/test-results-*.xml
+          pytest/test-results-*.xml
     - name: Publish Coverage Results
       uses: orgoro/coverage@v3.2
       with:
-        coverageFile: ./coverage.xml
+        coverageFile: coverage/coverage.xml
         thresholdAll: 0.95
         token: ${{ secrets.GITHUB_TOKEN }}
     
