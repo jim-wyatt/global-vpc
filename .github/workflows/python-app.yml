@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  checks: write
 
 jobs:
   build:
@@ -37,3 +38,9 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+        coverage xml coverage.xml
+    - name: Get Coverage
+      uses: orgoro/coverage@v3.2
+      with:
+        coverageFile: ./coverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
