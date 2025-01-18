@@ -292,7 +292,7 @@ def create_peering(requestor, acceptor) -> None:
         )
 
         logging.info(
-            f'Peering between {requestor["Region"]} and {acceptor["Region"]} requested'
+            f"Peering between {requestor['Region']} and {acceptor['Region']} requested"
         )
 
         vpc_peering_connection_accepter.wait_until_exists(
@@ -306,7 +306,7 @@ def create_peering(requestor, acceptor) -> None:
 
         vpc_peering_connection_accepter.accept()
         logging.info(
-            f'Peering between {requestor["Region"]} and {acceptor["Region"]} successful'
+            f"Peering between {requestor['Region']} and {acceptor['Region']} successful"
         )
 
         # Have to go back and set the tag from the target VPC side
@@ -336,7 +336,7 @@ def create_peering(requestor, acceptor) -> None:
             )
 
         logging.info(
-            f'Routing tables in {requestor["Region"]} and {acceptor["Region"]} updated'
+            f"Routing tables in {requestor['Region']} and {acceptor['Region']} updated"
         )
     except ClientError as e:
         logging.error(f"Error creating VPC peering: {e}")
@@ -406,7 +406,7 @@ Are you sure you want to proceed with the VPC creation and peering process? (yes
             futures = [
                 executor.submit(create_peering, requestor, acceptor)
                 for idx, requestor in enumerate(vpcs)
-                for acceptor in vpcs[idx+1:]
+                for acceptor in vpcs[idx + 1 :]
             ]
             for future in concurrent.futures.as_completed(futures):
                 future.result()
