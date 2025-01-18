@@ -78,7 +78,7 @@ def create_vpc_in_region(region, cidr_block) -> str:
             TagSpecifications=[
                 {
                     "ResourceType": "vpc",
-                    "Tags": [{"Key": "Name", "Value": f"vpc-{region}-gvpc"}],
+                    "Tags": [{"Key": "Name", "Value": f"vpc-{region}-jgn"}],
                 }
             ],
         )
@@ -108,7 +108,7 @@ def setup_vpc(vpc_id, region) -> tuple:
                 {
                     "ResourceType": "internet-gateway",
                     "Tags": [
-                        {"Key": "Name", "Value": f"igw-{region}-gvpc"},
+                        {"Key": "Name", "Value": f"igw-{region}-jgn"},
                     ],
                 },
             ]
@@ -164,7 +164,7 @@ def setup_route_tables(vpc, gateway_id) -> None:
                 Tags=[
                     {
                         "Key": "Name",
-                        "Value": f"rtb-{vpc.meta.client.meta.region_name}-gvpc",
+                        "Value": f"rtb-{vpc.meta.client.meta.region_name}-jgn",
                     }
                 ],
             )
@@ -240,7 +240,7 @@ def create_subnets(vpc, cidr_block, availability_zones) -> List:
                             "Tags": [
                                 {
                                     "Key": "Name",
-                                    "Value": f"subnet-{az['ZoneId']}-{subnet_type[:3]}-gvpc",
+                                    "Value": f"subnet-{az['ZoneId']}-{subnet_type[:3]}-jgn",
                                 }
                             ],
                         }
@@ -281,7 +281,7 @@ def create_peering(requestor, acceptor) -> None:
                     "Tags": [
                         {
                             "Key": "Name",
-                            "Value": f"pcx-{requestor['Region']}-{acceptor['Region']}-gvpc",
+                            "Value": f"pcx-{requestor['Region']}-{acceptor['Region']}-jgn",
                         },
                     ],
                 },
@@ -318,7 +318,7 @@ def create_peering(requestor, acceptor) -> None:
             Tags=[
                 {
                     "Key": "Name",
-                    "Value": f"pcx-{requestor['Region']}-{acceptor['Region']}-gvpc",
+                    "Value": f"pcx-{requestor['Region']}-{acceptor['Region']}-jgn",
                 }
             ],
         )
@@ -354,7 +354,7 @@ def main() -> None:
 
     # Prompt the user for confirmation
     confirmation = input(
-        """Global VPC (GVPC) - IaGP Demonstrator
+        """Global VPC (jgn) - IaGP Demonstrator
 This script will:
 
     - create a VPC in each region with the CIDR block 10.[region].0.0/16
