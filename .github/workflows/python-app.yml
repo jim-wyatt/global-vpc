@@ -33,24 +33,24 @@ jobs:
     - name: Install the code linting and formatting tool Ruff
       run: pipx install ruff
     - name: Lint code with Ruff
-      run: ruff check --output-format=github --target-version=py39 --verbose 2>&1 | tee -a lint-report.txt
+      run: ruff check --output-format=github --target-version=py39 --verbose 2>&1 | tee -a ruff/lint-report.txt
     - name: Check code formatting with Ruff
-      run: ruff format --diff --target-version=py39 --verbose 2>&1 | tee format-report.txt
+      run: ruff format --diff --target-version=py39 --verbose 2>&1 | tee ruff/format-report.txt
       continue-on-error: false
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
         coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
-        coverage xml -o coverage.xml
+        coverage xml -o coverage/coverage.xml
     - name: Archive test results
       uses: actions/upload-artifact@v4
       with:
         name: test-results-${{ matrix.python-version }}
         path: |
-          coverage.xml
+          coverage/coverage.xml
           junit/test-results-*.xml
-          lint-report.txt
-          format-report.txt
+          ruff/lint-report.txt
+          ruff/format-report.txt
   
   Publish:
     runs-on: ubuntu-24.04
