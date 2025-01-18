@@ -29,7 +29,7 @@ from botocore.exceptions import ClientError
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    filename="global_vpc.log"
+    filename="global_vpc.log",
 )
 
 # Magic numbers
@@ -353,11 +353,11 @@ def main() -> None:
     # Prompt the user for confirmation
     confirmation = input(
         """Global VPC (GVPC) - IaGP Demonstrator
-This script will: 
+This script will:
 
     - create a VPC in each region with the CIDR block 10.[region].0.0/16
 
-    - create four /22 subnets in each availability zone per VPC: 
+    - create four /22 subnets in each availability zone per VPC:
 
         - public -> publically accessible resources
         - private -> private resources, accessible from public subnets
@@ -371,7 +371,7 @@ This script will:
     - set up security groups to allow ICMP traffic between the VPCs
 
     - tag all resources with the appropriate names
-            
+
 Are you sure you want to proceed with the VPC creation and peering process? (yes/no): """
     )
 
@@ -406,7 +406,7 @@ Are you sure you want to proceed with the VPC creation and peering process? (yes
             futures = [
                 executor.submit(create_peering, requestor, acceptor)
                 for idx, requestor in enumerate(vpcs)
-                for acceptor in vpcs[idx + 1 :]
+                for acceptor in vpcs[idx + 1:]
             ]
             for future in concurrent.futures.as_completed(futures):
                 future.result()
