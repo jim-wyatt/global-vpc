@@ -210,14 +210,14 @@ class TestGlobalVPC(unittest.TestCase):
         subnets = global_vpc.create_subnets(mock_vpc, cidr_block, availability_zones)
 
         expected_calls = [
-            ("10.0.8.0/22", "us-east-1a"),
-            ("10.0.72.0/22", "us-east-1a"),
-            ("10.0.136.0/22", "us-east-1a"),
-            ("10.0.200.0/22", "us-east-1a"),
-            ("10.0.12.0/22", "us-west-2b"),
-            ("10.0.76.0/22", "us-west-2b"),
-            ("10.0.140.0/22", "us-west-2b"),
-            ("10.0.204.0/22", "us-west-2b"),
+            ("10.0.11.0/22", "us-east-1a"),
+            ("10.0.51.0/22", "us-east-1a"),
+            ("10.0.101.0/22", "us-east-1a"),
+            ("10.0.201.0/22", "us-east-1a"),
+            ("10.0.15.0/22", "us-west-2b"),
+            ("10.0.55.0/22", "us-west-2b"),
+            ("10.0.105.0/22", "us-west-2b"),
+            ("10.0.205.0/22", "us-west-2b"),
         ]
 
         actual_calls = [
