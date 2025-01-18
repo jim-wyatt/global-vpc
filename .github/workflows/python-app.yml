@@ -16,12 +16,10 @@ permissions:
 
 jobs:
   Build:
-
     runs-on: ubuntu-24.04
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -44,6 +42,10 @@ jobs:
         pip install pytest pytest-cov
         coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
         coverage xml -o coverage.xml
+  
+  Publish:
+    runs-on: ubuntu-24.04  
+    steps:
     - name: Publish Coverage Results
       uses: orgoro/coverage@v3.2
       with:
