@@ -406,7 +406,7 @@ Are you sure you want to proceed with the VPC creation and peering process? (yes
             futures = [
                 executor.submit(create_peering, requestor, acceptor)
                 for idx, requestor in enumerate(vpcs)
-                for acceptor in vpcs[idx + 1:]
+                for acceptor in vpcs[idx + 1 :]
             ]
             for future in concurrent.futures.as_completed(futures):
                 future.result()
