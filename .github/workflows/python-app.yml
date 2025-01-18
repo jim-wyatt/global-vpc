@@ -44,14 +44,15 @@ jobs:
         pip install pytest pytest-cov
         coverage run -m pytest test_global_vpc.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
         coverage xml -o coverage.xml
+    - name: Publish Coverage Results
+      uses: orgoro/coverage@v3.2
+      with:
+        coverageFile: ./coverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
         files: |
           junit/test-results-*.xml
-    - name: Publish Coverage Results
-      uses: orgoro/coverage@v3.2
-      with:
-        coverageFile: ./coverage.xml
-        token: ${{ secrets.GITHUB_TOKEN }}
+    
