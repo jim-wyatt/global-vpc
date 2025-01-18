@@ -27,7 +27,6 @@ from botocore.exceptions import ClientError
 
 
 class TestGlobalVPC(unittest.TestCase):
-
     @patch("global_vpc.boto3.client")
     def test_get_all_regions(self, mock_boto_client):
         mock_ec2 = MagicMock()
@@ -132,8 +131,10 @@ class TestGlobalVPC(unittest.TestCase):
         )
 
         # Test error handling
-        mock_vpc.route_tables.all.return_value[0].create_route.side_effect = (
-            ClientError({"Error": {"Code": "Error"}}, "CreateRoute")
+        mock_vpc.route_tables.all.return_value[
+            0
+        ].create_route.side_effect = ClientError(
+            {"Error": {"Code": "Error"}}, "CreateRoute"
         )
         global_vpc.setup_route_tables(mock_vpc, gateway_id)
 
@@ -147,9 +148,11 @@ class TestGlobalVPC(unittest.TestCase):
         mock_vpc = MagicMock()
         mock_vpc.create_subnet = MagicMock()
 
-        with patch("global_vpc.create_vpc_in_region", return_value="vpc-12345"), patch(
-            "global_vpc.setup_vpc", return_value=(mock_vpc, "igw-12345")
-        ), patch("global_vpc.create_subnets") as mock_create_subnets:
+        with (
+            patch("global_vpc.create_vpc_in_region", return_value="vpc-12345"),
+            patch("global_vpc.setup_vpc", return_value=(mock_vpc, "igw-12345")),
+            patch("global_vpc.create_subnets") as mock_create_subnets,
+        ):
             global_vpc.process_region("us-east-1", "10.0.0.0/16")
             mock_create_subnets.assert_called_once()
 
@@ -182,9 +185,11 @@ class TestGlobalVPC(unittest.TestCase):
     @patch("global_vpc.boto3.client")
     @patch("builtins.input", side_effect=["no"])
     def test_main_cancelled(self, mock_input, mock_boto_client):
-        with patch("global_vpc.get_all_regions"), patch(
-            "global_vpc.process_region"
-        ), patch("global_vpc.create_peering"):
+        with (
+            patch("global_vpc.get_all_regions"),
+            patch("global_vpc.process_region"),
+            patch("global_vpc.create_peering"),
+        ):
             global_vpc.main()
             global_vpc.process_region.assert_not_called()
             global_vpc.create_peering.assert_not_called()
@@ -283,8 +288,10 @@ class TestGlobalVPC(unittest.TestCase):
         mock_vpc = MagicMock()
         mock_ec2_resource.Vpc.return_value = mock_vpc
         mock_vpc.route_tables.all.return_value = [MagicMock()]
-        mock_vpc.route_tables.all.return_value[0].create_route.side_effect = (
-            ClientError({"Error": {"Code": "Error"}}, "CreateRoute")
+        mock_vpc.route_tables.all.return_value[
+            0
+        ].create_route.side_effect = ClientError(
+            {"Error": {"Code": "Error"}}, "CreateRoute"
         )
 
         global_vpc.setup_route_tables(mock_vpc, "igw-12345")
