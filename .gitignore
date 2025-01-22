@@ -172,5 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
 .vscode/settings.json
 junit/test-results.xml
+*.pem
