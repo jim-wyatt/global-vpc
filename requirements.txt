@@ -1,6 +1,6 @@
 boto3==1.36.19
 botocore==1.36.16
-coverage==7.6.10
+coverage==7.6.12
 iniconfig==2.0.0
 jmespath==1.0.1
 packaging==24.2
