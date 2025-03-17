@@ -1,5 +1,5 @@
 boto3==1.37.9
-botocore==1.37.9
+botocore==1.37.13
 coverage==7.6.12
 iniconfig==2.0.0
 jmespath==1.0.1
