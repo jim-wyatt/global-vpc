@@ -79,7 +79,7 @@ pytest test_global_vpc.py
 Install the required Python packages using `pip`:
 
 ```bash
-pip install boto3 pytest
+pip install -r requirements.txt
 ```
 
 ## Contributing
