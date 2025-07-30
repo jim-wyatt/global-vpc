@@ -7,6 +7,8 @@ In addition to setting up individual VPCs, the script establishes VPC peering co
 
 The main function orchestrates the entire process, starting with fetching the regions, creating and setting up VPCs in each region, and finally establishing peering connections between the VPCs. The script is designed to be run from the command line and requires AWS credentials to be configured. By automating these tasks, the script simplifies the management of a global network infrastructure, ensuring consistency and reducing the potential for human error.
 
+<img width="1306" height="1149" alt="image" src="https://github.com/user-attachments/assets/6832a35f-8129-4749-bc93-7ebbcd71f3ac" />
+
 This repository contains two main files: `global_vpc.py` and `test_global_vpc.py`. Below is a detailed description of each file and its contents.
 
 ## global_vpc.py
