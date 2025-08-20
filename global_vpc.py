@@ -87,8 +87,7 @@ def create_vpc_in_region(region, cidr_block) -> str:
         return vpc_id
     except ClientError as e:
         logging.error(f"Error creating VPC in region {region}: {e}")
-        return None
-
+        return ""
 
 def setup_vpc(vpc_id, region) -> tuple:
     """Set up the VPC by creating and attaching an internet gateway.
@@ -102,8 +101,8 @@ def setup_vpc(vpc_id, region) -> tuple:
     """
     try:
         ec2 = boto3.resource("ec2", region_name=region)
-        vpc = ec2.Vpc(vpc_id)
-        gateway = ec2.create_internet_gateway(
+        vpc = ec2.Vpc(vpc_id) # type: ignore[attr-defined]
+        gateway = ec2.create_internet_gateway( # type: ignore[attr-defined]
             TagSpecifications=[
                 {
                     "ResourceType": "internet-gateway",
@@ -204,10 +203,10 @@ def process_region(region, cidr_block) -> dict:
 
             return {"Region": region, "VpcId": vpc_id, "Cidr": cidr}
         else:
-            return None
+            return dict()
     except ClientError as e:
         logging.error(f"Error processing region {region}: {e}")
-        return None
+        return dict()
 
 
 def create_subnets(vpc, cidr_block, availability_zones) -> List:
@@ -252,7 +251,7 @@ def create_subnets(vpc, cidr_block, availability_zones) -> List:
         return subnets
     except ClientError as e:
         logging.error(f"Error creating subnets in VPC {vpc.id}: {e}")
-        return None
+        return list()
 
 
 def create_peering(requestor, acceptor) -> None:
@@ -266,11 +265,11 @@ def create_peering(requestor, acceptor) -> None:
         None
     """
     try:
-        vpc1 = boto3.resource("ec2", region_name=requestor["Region"]).Vpc(
+        vpc1 = boto3.resource("ec2", region_name=requestor["Region"]).Vpc( # type: ignore[attr-defined]
             requestor["VpcId"]
         )
         target_region_resource = boto3.resource("ec2", region_name=acceptor["Region"])
-        vpc2 = target_region_resource.Vpc(acceptor["VpcId"])
+        vpc2 = target_region_resource.Vpc(acceptor["VpcId"]) # type: ignore[attr-defined]
 
         peering_connection = vpc1.request_vpc_peering_connection(
             PeerVpcId=acceptor["VpcId"],
@@ -289,7 +288,7 @@ def create_peering(requestor, acceptor) -> None:
         )
 
         # Get the request from the target VPC, wait until it exists, and accept
-        vpc_peering_connection_accepter = target_region_resource.VpcPeeringConnection(
+        vpc_peering_connection_accepter = target_region_resource.VpcPeeringConnection( # type: ignore[attr-defined]
             peering_connection.vpc_peering_connection_id
         )
 

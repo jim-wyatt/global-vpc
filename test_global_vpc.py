@@ -60,7 +60,7 @@ class TestGlobalVPC(unittest.TestCase):
             {"Error": {"Code": "Error"}}, "CreateVpc"
         )
         vpc_id = global_vpc.create_vpc_in_region("us-east-1", "10.0.0.0/16")
-        self.assertIsNone(vpc_id)
+        self.assertEqual(vpc_id, '')
 
     @patch("global_vpc.boto3.client")
     @patch("global_vpc.boto3.resource")
@@ -191,8 +191,8 @@ class TestGlobalVPC(unittest.TestCase):
             patch("global_vpc.create_peering"),
         ):
             global_vpc.main()
-            global_vpc.process_region.assert_not_called()
-            global_vpc.create_peering.assert_not_called()
+            global_vpc.process_region.assert_not_called() # type: ignore[attr-defined]
+            global_vpc.create_peering.assert_not_called() # type: ignore[attr-defined]
 
     @patch("global_vpc.boto3.client")
     def test_create_subnets(self, mock_boto_client):
@@ -233,7 +233,7 @@ class TestGlobalVPC(unittest.TestCase):
             {"Error": {"Code": "Error"}}, "CreateSubnet"
         )
         subnets = global_vpc.create_subnets(mock_vpc, cidr_block, availability_zones)
-        self.assertIsNone(subnets)
+        self.assertEqual(subnets, [])
 
     @patch("global_vpc.boto3.client")
     def test_get_all_regions_error_handling(self, mock_boto_client):
@@ -255,7 +255,7 @@ class TestGlobalVPC(unittest.TestCase):
         )
 
         vpc_id = global_vpc.create_vpc_in_region("us-east-1", "10.0.0.0/16")
-        self.assertIsNone(vpc_id)
+        self.assertEqual(vpc_id, '')
 
     @patch("global_vpc.boto3.resource")
     def test_setup_vpc_error_handling(self, mock_boto_resource):
@@ -309,13 +309,13 @@ class TestGlobalVPC(unittest.TestCase):
         )
 
         result = global_vpc.process_region("us-east-1", 11)
-        self.assertIsNone(result)
+        self.assertEqual(result, {})
         mock_ec2_client.describe_availability_zones.side_effect = ClientError(
             {"Error": {"Code": "Error"}}, "DescribeAvailabilityZones"
         )
 
         result = global_vpc.process_region("us-east-1", 11)
-        self.assertIsNone(result)
+        self.assertEqual(result, {})
 
     @patch("global_vpc.boto3.resource")
     def test_create_subnets_error_handling(self, mock_boto_resource):
@@ -329,7 +329,7 @@ class TestGlobalVPC(unittest.TestCase):
 
         availability_zones = [{"ZoneName": "us-east-1a", "ZoneId": "use1-az1"}]
         subnets = global_vpc.create_subnets(mock_vpc, 11, availability_zones)
-        self.assertIsNone(subnets)
+        self.assertEqual(subnets, [])
 
     @patch("global_vpc.boto3.resource")
     def test_create_vpc_peering_error_handling(self, mock_boto_resource):
@@ -375,7 +375,3 @@ class TestGlobalVPC(unittest.TestCase):
     def test_main(self, mock_main):
         global_vpc.main()
         mock_main.assert_called_once()
-
-
-if __name__ == "__main__":
-    unittest.main()
