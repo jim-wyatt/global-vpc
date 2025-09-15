@@ -8,6 +8,6 @@ pluggy==1.6.0
 pytest==8.4.2
 pytest-cov==6.3.0
 python-dateutil==2.9.0.post0
-s3transfer==0.13.1
+s3transfer==0.14.0
 six==1.17.0
 urllib3==2.5.0
