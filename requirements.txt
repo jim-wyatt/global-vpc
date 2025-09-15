@@ -6,7 +6,7 @@ jmespath==1.0.1
 packaging==25.0
 pluggy==1.6.0
 pytest==8.4.2
-pytest-cov==6.3.0
+pytest-cov==7.0.0
 python-dateutil==2.9.0.post0
 s3transfer==0.14.0
 six==1.17.0
