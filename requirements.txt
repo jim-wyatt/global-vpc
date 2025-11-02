@@ -1,4 +1,4 @@
-boto3==1.40.50
+boto3==1.40.59
 botocore==1.40.59
 coverage==7.10.7
 iniconfig==2.1.0
